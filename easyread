@@ -1,0 +1,74 @@
+1,first add 2 plugin like  flow toyour pom.xml
+
+<plugin>
+	<groupId>org.springframework.boot</groupId>
+	<artifactId>spring-boot-maven-plugin</artifactId>
+	<version>${spring-boot.version}</version>
+	<dependencies>
+		<dependency>
+			<groupId>org.springframework.boot.experimental</groupId>
+			<artifactId>spring-boot-thin-layout</artifactId>
+			<version>${wrapper.version}</version>
+		</dependency>
+	</dependencies>
+</plugin>
+
+<plugin>
+	<groupId>org.springframework.boot.experimental</groupId>
+	<artifactId>spring-boot-thin-maven-plugin</artifactId>
+	<version>${wrapper.version}</version>
+	<executions>
+		<execution>
+			<id>resolve</id>
+			<goals>
+				<goal>resolve</goal>
+			</goals>
+			<inherited>false</inherited>
+		</execution>
+	</executions>
+</plugin>
+
+
+2, mvn clean package 
+
+
+3, run linux command like flow 
+$ cd samples/app
+$ mvn package
+$ cd target/thin/root
+$ java -Dthin.root=. -jar app-0.0.1-SNAPSHOT.jar
+
+
+my pom.xml add like flow 
+    <plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+				<configuration>
+					<finalName>${project.name}</finalName>
+					<jvmArguments>-Dfile.encoding=UTF-8</jvmArguments>
+				</configuration>
+				<dependencies>
+					<dependency>
+						<!-- 加入该配置，使用maven package，依赖jar不会打包在项目最终jar文件内 -->
+						<groupId>org.springframework.boot.experimental</groupId>
+						<artifactId>spring-boot-thin-layout</artifactId>
+						<version>1.0.12.RELEASE</version>
+					</dependency>
+				</dependencies>
+			</plugin>
+			<!-- 加入该配置，maven package执行时会在target目录整理好依赖包 -->
+			<plugin>
+				<groupId>org.springframework.boot.experimental</groupId>
+				<artifactId>spring-boot-thin-maven-plugin</artifactId>
+				<version>1.0.12.RELEASE</version>
+				<executions>
+					<execution>
+						<!-- Download the dependencies at build time -->
+						<id>resolve</id>
+						<goals>
+							<goal>resolve</goal>
+						</goals>
+						<inherited>false</inherited>
+					</execution>
+				</executions>
+			</plugin>
